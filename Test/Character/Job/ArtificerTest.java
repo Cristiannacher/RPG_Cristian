@@ -1,4 +1,4 @@
-package Character.Race;
+package Character.Job;
 
 import Character.Stat.Constitution;
 import Character.Stat.Dexterity;
@@ -9,32 +9,31 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BrujaTest {
+class ArtificerTest {
 
-    Bruja bruja;
-
+    Artificer artificier;
     @BeforeEach
     void setUp() {
-        bruja = new Bruja();
-    }
-
-    @Test
-    void strength_GetStrenghtValue_ModifierStrengthValue() {
-        assertEquals(-2, bruja.modifier(new Strength(0)));
+        artificier = new Artificer();
     }
 
     @Test
     void intelligence_GetIntelligenceValue_ModifierIntelligenceValue() {
-        assertEquals(4, bruja.modifier(new Intelligence(0)));
+        assertEquals(2, artificier.modifier(new Intelligence(0)));
     }
 
     @Test
     void dexterety_GetDexteretyValue_ModifierDexteretyValue() {
-        assertEquals(3, bruja.modifier(new Dexterity(0)));
+        assertEquals(2, artificier.modifier(new Dexterity(0)));
     }
 
     @Test
     void constitution_GetConstitutionValue_ModifierConstituionValue() {
-        assertEquals(0, bruja.modifier(new Constitution(0)));
+        assertEquals(1, artificier.modifier(new Constitution(0)));
     }
+    @Test
+    void strength_GetStrenghtValue_ModifierStrengthValue() {
+        assertEquals(0, artificier.modifier(new Strength(0)));
+    }
+
 }
