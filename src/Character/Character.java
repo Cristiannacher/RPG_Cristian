@@ -4,7 +4,7 @@ import Character.Job.Job;
 import Character.Race.Race;
 import Character.Stat.*;
 
-public class Character {
+public class Character implements IDamageable {
 
     private String name;
     private Race race;
@@ -13,8 +13,9 @@ public class Character {
     private Stat dexterity;
     private Stat constitution;
     private Stat intelligence;
+    private double damageTaken;
 
-    public Character (String name, Race race, Job job, Strength strength, Dexterity dexterity, Constitution constitution, Intelligence intelligence){
+    public Character(String name, Race race, Job job, Strength strength, Dexterity dexterity, Constitution constitution, Intelligence intelligence) {
         this.name = name;
         this.race = race;
         this.job = job;
@@ -36,20 +37,48 @@ public class Character {
         return job;
     }
 
-    public double velocity(){
-        return  (dexterity.getValue() + race.modifier(dexterity) + job.modifier(dexterity))*2;
+    public double getDamageTaken() {
+        return damageTaken;
     }
 
-    public double power(){
-        return (strength.getValue() + race.modifier(strength) + job.modifier(strength))*2;
+    public double velocity() {
+        return (dexterity.getValue() + race.modifier(dexterity) + job.modifier(dexterity)) * 2;
     }
 
-    public double magic(){
-        return (intelligence.getValue() + race.modifier(intelligence) + job.modifier(intelligence))*2;
+    public double power() {
+        return (strength.getValue() + race.modifier(strength) + job.modifier(strength)) * 2;
     }
 
-    public double health(){
-        return (constitution.getValue() + race.modifier(constitution) + job.modifier(constitution))*2;
+    public double magic() {
+        return (intelligence.getValue() + race.modifier(intelligence) + job.modifier(intelligence)) * 2;
+    }
+
+    @Override
+    public double maxHealth() {
+        return (constitution.getValue() + race.modifier(constitution) + job.modifier(constitution)) * 25;
+    }
+
+    @Override
+    public double health() {
+        return maxHealth() - damageTaken;
+    }
+
+    @Override
+    public boolean isDead() {
+        return (maxHealth() <= damageTaken);
+    }
+
+    @Override
+    public void receivesDamage(double amount) {
+        damageTaken =  damageTaken +amount;
+    }
+
+    @Override
+    public void heals(double amount) {
+        if((damageTaken - amount)<=0)
+            damageTaken = 0;
+        else damageTaken = damageTaken - amount;
+
     }
 
     @Override
