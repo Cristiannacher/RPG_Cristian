@@ -3,6 +3,7 @@ package Character;
 import Character.Job.Job;
 import Character.Race.Race;
 import Character.Stat.*;
+import Item.Food.IConsumable;
 
 public class Character implements IDamageable {
 
@@ -53,6 +54,16 @@ public class Character implements IDamageable {
         return (intelligence.getValue() + race.modifier(intelligence) + job.modifier(intelligence)) * 2;
     }
 
+    public void consumeAlimento(IConsumable consumable){
+        consumable.consumedBy(this);
+        System.out.println(name +" consumed: "+ consumable.toString());
+    }
+
+    public void consumePocion(IConsumable consumable){
+        consumable.consumedBy(this);
+        System.out.println(name+" consumed:" + consumable.toString());
+    }
+
     @Override
     public double maxHealth() {
         return (constitution.getValue() + race.modifier(constitution) + job.modifier(constitution)) * 25;
@@ -71,6 +82,7 @@ public class Character implements IDamageable {
     @Override
     public void receivesDamage(double amount) {
         damageTaken =  damageTaken +amount;
+        System.out.println(name+" received "+amount+ " damage. " +"Health: "+health()+"/"+maxHealth());
     }
 
     @Override
@@ -78,7 +90,7 @@ public class Character implements IDamageable {
         if((damageTaken - amount)<=0)
             damageTaken = 0;
         else damageTaken = damageTaken - amount;
-
+System.out.println(name+" healed "+ amount+" life."+" Health: "+health()+"/"+maxHealth());
     }
 
     @Override
