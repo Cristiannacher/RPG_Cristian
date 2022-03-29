@@ -4,6 +4,6 @@ public class Stick extends Weapon{
 
    public Stick(){
       this.weight = 3;
-      this.Strenght =1;
+      this.strenght =1;
    }
 }

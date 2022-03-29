@@ -1,5 +1,8 @@
 package Item.Jewels;
 
+import Character.Stat.Dexterity;
+import Character.Stat.Intelligence;
+import Character.Stat.Stat;
 import Item.IPicable;
 import Item.IEquipable;
 import Character.Character;
@@ -16,12 +19,13 @@ public abstract class Jewels implements IEquipable {
         return weight;
     }
 
-    public int getDexterety() {
-        return dexterety;
-    }
-
-    public int getIntelligence() {
-        return intelligence;
+    @Override
+    public int modifier(Stat stat) {
+        if(stat instanceof Dexterity)
+            return dexterety;
+        if(stat instanceof Intelligence)
+            return intelligence;
+        return 0;
     }
 
     @Override

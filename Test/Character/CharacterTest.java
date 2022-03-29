@@ -8,6 +8,8 @@ import Character.Stat.Constitution;
 import Character.Stat.Dexterity;
 import Character.Stat.Intelligence;
 import Character.Stat.Strength;
+import Item.Armor.Armor;
+import Item.Armor.HardArmor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,15 +24,17 @@ class CharacterTest {
     private int constitutionValue = 2;
     private int intelligenceValue = 2;
 
-    Race racemock = new Racemock(raceValue);
-    Job jobmock = new Jobmock(jobValue);
-
+    Race racemock;
+    Job jobmock;
     Character character;
+    Armor hardarmor;
+
     @BeforeEach
     void setUp() {
         racemock = new Racemock(raceValue);
         jobmock = new Jobmock(jobValue);
         character = new Character("Pedro", racemock, jobmock, new Strength(strengthValue), new Dexterity(dexteretyValue), new Constitution(constitutionValue), new Intelligence(intelligenceValue));
+        hardarmor = new HardArmor();
     }
 
     @Test
@@ -40,7 +44,7 @@ class CharacterTest {
 
     @Test
     void character_getRace_haveCharacterRace() {
-        assertEquals(racemock,character.getRace());
+        assertEquals(racemock, character.getRace());
     }
 
     @Test
@@ -49,32 +53,35 @@ class CharacterTest {
     }
 
     @Test
-   void chargeItem_Youcancharche(){
-
-   }
+    void equipItem_youCanEquip() {
+        character.equipItem(hardarmor);
+       assertFalse(character.getEquipables().isEmpty());
+    }
 
     @Test
     void velocity_takeIntoAccountRaceAndJobModifiers() {
-        int velocityExpected = (dexteretyValue + raceValue +jobValue)*2;
-        assertEquals(velocityExpected,character.velocity());
+        int velocityExpected = (dexteretyValue + raceValue + jobValue) * 2;
+        assertEquals(velocityExpected, character.velocity());
     }
 
     @Test
     void power_takeIntoAccountRaceAndJobModifiers() {
-        int powerExpected = (strengthValue +raceValue+jobValue)*2;
-        assertEquals(powerExpected,character.power());
+        int powerExpected = (strengthValue + raceValue + jobValue) * 2;
+        assertEquals(powerExpected, character.power());
     }
 
     @Test
     void magic_takeIntoAccountRaceAndJobModifiers() {
-        int magicExpected = (intelligenceValue+raceValue+jobValue)*2;
-        assertEquals(magicExpected,character.magic());
+        int magicExpected = (intelligenceValue + raceValue + jobValue) * 2;
+        assertEquals(magicExpected, character.magic());
     }
+
     @Test
     void character_getMaxHealth_haveMaxHealth() {
         int maxhealth = (constitutionValue + jobValue + raceValue) * 25;
         assertEquals(maxhealth, character.maxHealth());
     }
+
     //arreglar
     @Test
     void character_health_haveCharacterHealth() {
@@ -133,6 +140,7 @@ class CharacterTest {
         character.heals(heal);
         assertEquals(damageBeforeHeal, character.getDamageTaken());
     }
+
     @Test
     void character_healsEqualsThanDamage_healthEqualsMaxHealth() {
         int damage = 5;

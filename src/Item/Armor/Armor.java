@@ -1,5 +1,7 @@
 package Item.Armor;
 
+import Character.Stat.Constitution;
+import Character.Stat.Stat;
 import Item.IEquipable;
 import Character.Character;
 
@@ -14,10 +16,12 @@ public abstract class Armor implements IEquipable {
         return weight;
     }
 
-    public int getConstitution() {
-        return constitution;
+    @Override
+    public int modifier(Stat stat){
+        if(stat instanceof Constitution)
+            return  constitution;
+        return 0;
     }
-
 
     @Override
     public String toString() {

@@ -4,7 +4,7 @@ public class Sword extends Weapon{
 
     public Sword (){
         this.weight = 6;
-        this.Strenght = 3;
+        this.strenght = 3;
     }
 
 

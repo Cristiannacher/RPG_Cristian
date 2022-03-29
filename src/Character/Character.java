@@ -96,38 +96,13 @@ public class Character implements IDamageable {
     }
 
     public void equipItem(IEquipable equipado) {
-//        if (!equipables.isEmpty()) {
         for (IEquipable equipable : equipables) {
             if (equipable.equals(equipado)) {
                 System.out.println("You already have an " + equipado);
-                break;
-            } else {
-                equipables.add(equipado);
+                return;
             }
         }
-//        }else {
-//            equipables.add(equipado);
-//        }
-    }
-
-    public void increaseConstitution(int value) {
-        this.constitution.increase(value);
-    }
-
-    public void increaseStrenght(int value) {
-        this.strength.increase(value);
-    }
-
-    public void increaseDexterety(int value) {
-        this.dexterity.increase(value);
-    }
-
-    public void increaseIntelligence(int value) {
-        this.intelligence.increase(value);
-    }
-
-    public void addPortable(IEquipable portable) {
-        equipables.add(portable);
+        equipables.add(equipado);
     }
 
     public int getConstitutionValue() {
