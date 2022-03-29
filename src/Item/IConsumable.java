@@ -1,4 +1,4 @@
-package Item.Food;
+package Item;
 
 import Character.Character;
 

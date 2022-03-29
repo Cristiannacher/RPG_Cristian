@@ -25,8 +25,7 @@ class CharacterTest {
     Race racemock = new Racemock(raceValue);
     Job jobmock = new Jobmock(jobValue);
 
-    Character character = new Character("Pedro", racemock, jobmock, new Strength(strengthValue), new Dexterity(dexteretyValue), new Constitution(constitutionValue), new Intelligence(intelligenceValue));
-
+    Character character;
     @BeforeEach
     void setUp() {
         racemock = new Racemock(raceValue);
@@ -48,6 +47,11 @@ class CharacterTest {
     void character_getJob_haverCharacterJob() {
         assertEquals(jobmock, character.getJob());
     }
+
+    @Test
+   void chargeItem_Youcancharche(){
+
+   }
 
     @Test
     void velocity_takeIntoAccountRaceAndJobModifiers() {
@@ -112,11 +116,11 @@ class CharacterTest {
     void character_healsElseThanDamage_helathElseMaxhealth() {
         int damage = 5;
         int heal = 2;
-        int damageBeforeHeal = damage - heal;
+        int damageAftereHeal = damage - heal;
 
         character.receivesDamage(damage);
         character.heals(heal);
-        assertEquals(damageBeforeHeal, character.getDamageTaken());
+        assertEquals(damageAftereHeal, character.getDamageTaken());
     }
 
     @Test

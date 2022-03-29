@@ -1,7 +1,9 @@
 package Item.Food;
 
-public class Mushroom extends Food{
+public class Mushroom extends Food {
 
-    private int power =7;
-
+    public Mushroom() {
+        this.power = 7;
+        this.weight = 1;
+    }
 }

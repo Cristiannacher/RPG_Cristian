@@ -1,6 +1,9 @@
 package Item.Food;
 
 public class Apple extends Food {
-    private int power = 5;
 
+    public Apple() {
+        this.power = 5;
+        this.weight =1;
+    }
 }

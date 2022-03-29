@@ -1,5 +1,9 @@
 package Item.Potion;
 
 public class MinorHealingPotion extends Potion{
-    private int power =25;
+
+    public MinorHealingPotion(){
+        this.power= 25;
+        this.weight = 1;
+    }
 }

@@ -11,11 +11,11 @@ public abstract class Stat {
     public int getValue() {
         return value;
     }
-    public void increase(){
-        value++;
+    public void increase(int value){
+        this.value += value;
     }
-    public void decrease(){
-        value--;
+    public void decrease(int value){
+        this.value -= value;
     }
 
     @Override

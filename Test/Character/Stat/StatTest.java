@@ -22,13 +22,13 @@ class StatTest {
 
     @Test
     void IncreaseValue_IncreaseValueBy1() {
-        stat.increase();
+        stat.increase(1);
         assertEquals(inicialValue+1, stat.getValue());
     }
 
     @Test
     void Decrease_DecreaseValueBy1() {
-        stat.decrease();
+        stat.decrease(1);
         assertEquals(inicialValue-1, stat.getValue());
     }
 

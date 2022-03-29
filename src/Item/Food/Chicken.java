@@ -1,7 +1,10 @@
 package Item.Food;
 
-public class Chicken extends Food{
+public class Chicken extends Food {
 
-    private int power = 25;
+    public Chicken() {
+        this.power = 25;
+        this.weight = 3;
+    }
 
 }

@@ -3,7 +3,13 @@ package Character;
 import Character.Job.Job;
 import Character.Race.Race;
 import Character.Stat.*;
-import Item.Food.IConsumable;
+import Item.IChargeable;
+import Item.IConsumable;
+import Item.IPortable;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Character implements IDamageable {
 
@@ -15,6 +21,10 @@ public class Character implements IDamageable {
     private Stat constitution;
     private Stat intelligence;
     private double damageTaken;
+    private List<IPortable> portableList = new ArrayList<>();
+    private List<IChargeable> chargeables = new ArrayList<>();
+    private int strong;
+
 
     public Character(String name, Race race, Job job, Strength strength, Dexterity dexterity, Constitution constitution, Intelligence intelligence) {
         this.name = name;
@@ -24,6 +34,10 @@ public class Character implements IDamageable {
         this.dexterity = dexterity;
         this.constitution = constitution;
         this.intelligence = intelligence;
+    }
+
+    public List<IPortable> getPortableList() {
+        return portableList;
     }
 
     public String getName() {
@@ -54,14 +68,68 @@ public class Character implements IDamageable {
         return (intelligence.getValue() + race.modifier(intelligence) + job.modifier(intelligence)) * 2;
     }
 
-    public void consumeAlimento(IConsumable consumable){
-        consumable.consumedBy(this);
-        System.out.println(name +" consumed: "+ consumable.toString());
+    public void chargeItem(IChargeable chargeable){
+        int accomulatedWeight = 0;
+        strong = (strength.getValue() * constitution.getValue());
+        if(!chargeables.isEmpty()){
+            for(IChargeable object:chargeables){
+                accomulatedWeight += object.getWeight();
+            }
+            if((accomulatedWeight + chargeable.getWeight()) <= strong){
+                chargeables.add(chargeable);
+            } else System.out.println("You don't have enough strength");
+        } else {
+            if(chargeable.getWeight()<=strong)
+                chargeables.add(chargeable);
+        }
     }
 
-    public void consumePocion(IConsumable consumable){
+    public void carryItem(IPortable portable) {
+        portable.carry(this);
+    }
+
+    public void increaseConstitution(int value) {
+        this.constitution.increase(value);
+    }
+
+    public void increaseStrenght(int value) {
+        this.strength.increase(value);
+    }
+
+    public void increaseDexterety(int value) {
+        this.dexterity.increase(value);
+    }
+
+    public void increaseIntelligence(int value) {
+        this.intelligence.increase(value);
+    }
+
+    public void addPortable(IPortable portable) {
+        portableList.add(portable);
+    }
+
+    public int getConstitutionValue() {
+        return constitution.getValue();
+    }
+    public int getDexterityValue(){
+        return dexterity.getValue();
+    }
+    public int getIntelligenceValue(){
+        return intelligence.getValue();
+    }
+    public int getStrengthValue(){
+        return strength.getValue();
+    }
+
+
+    public void consumeAlimento(IConsumable consumable) {
         consumable.consumedBy(this);
-        System.out.println(name+" consumed:" + consumable.toString());
+        System.out.println(name + " consumed: " + consumable.toString());
+    }
+
+    public void consumePocion(IConsumable consumable) {
+        consumable.consumedBy(this);
+        System.out.println(name + " consumed:" + consumable.toString());
     }
 
     @Override
@@ -81,16 +149,16 @@ public class Character implements IDamageable {
 
     @Override
     public void receivesDamage(double amount) {
-        damageTaken =  damageTaken +amount;
-        System.out.println(name+" received "+amount+ " damage. " +"Health: "+health()+"/"+maxHealth());
+        damageTaken = damageTaken + amount;
+        System.out.println(name + " received " + amount + " damage. " + "Health: " + health() + "/" + maxHealth());
     }
 
     @Override
     public void heals(double amount) {
-        if((damageTaken - amount)<=0)
+        if (damageTaken <= amount)
             damageTaken = 0;
         else damageTaken = damageTaken - amount;
-System.out.println(name+" healed "+ amount+" life."+" Health: "+health()+"/"+maxHealth());
+        System.out.println(name + " healed " + amount + " life." + " Health: " + health() + "/" + maxHealth());
     }
 
     @Override
