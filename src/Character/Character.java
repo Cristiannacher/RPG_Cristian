@@ -94,31 +94,51 @@ public class Character implements IDamageable {
                 picables.add(picable);
         }
     }
+    public void unpicIitem(IPicable picable){
+        boolean unpicket = false;
+        for(IPicable object: picables){
+            if(picable.equals(object)) {
+                picables.remove(picable);
+                unpicket = true;
+            }
+        }
+        if(unpicket)
+            System.out.println("The item isent in your inventory");
+    }
 
-    public void equipItem(IEquipable equipado) {
+    public void equipItem(IEquipable equiped) {
         for (IEquipable equipable : equipables) {
-            if (equipable.equals(equipado)) {
-                System.out.println("You already have an " + equipado);
+            if (equipable.equals(equiped)) {
+                System.out.println("You already have an " + equiped);
                 return;
             }
         }
-        equipables.add(equipado);
+        equipables.add(equiped);
     }
 
-    public int getConstitutionValue() {
-        return constitution.getValue();
+    // no funcione me cagon deu
+    public void unequipItem(IEquipable equiped){
+        for(IEquipable object: equipables){
+            if(equiped.equals(object))
+                equipables.remove(equiped);
+            break;
+        }
     }
 
-    public int getDexterityValue() {
-        return dexterity.getValue();
+    public Stat getConstitution() {
+        return constitution;
     }
 
-    public int getIntelligenceValue() {
-        return intelligence.getValue();
+    public Stat getDexterity() {
+        return dexterity;
     }
 
-    public int getStrengthValue() {
-        return strength.getValue();
+    public Stat getIntelligence() {
+        return intelligence;
+    }
+
+    public Stat getStrength() {
+        return strength;
     }
 
 

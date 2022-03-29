@@ -4,12 +4,15 @@ import Character.Job.Job;
 import Character.Job.Jobmock;
 import Character.Race.Race;
 import Character.Race.Racemock;
-import Character.Stat.Constitution;
-import Character.Stat.Dexterity;
-import Character.Stat.Intelligence;
-import Character.Stat.Strength;
+import Character.Stat.*;
 import Item.Armor.Armor;
 import Item.Armor.HardArmor;
+import Item.EquipableMock;
+import Item.IEquipable;
+import Item.Jewels.Jewels;
+import Item.Jewels.Necklace;
+import Item.Weapon.Stick;
+import Item.Weapon.Weapon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +31,9 @@ class CharacterTest {
     Job jobmock;
     Character character;
     Armor hardarmor;
+    Jewels necklace;
+    Weapon stick;
+    EquipableMock mock;
 
     @BeforeEach
     void setUp() {
@@ -35,6 +41,9 @@ class CharacterTest {
         jobmock = new Jobmock(jobValue);
         character = new Character("Pedro", racemock, jobmock, new Strength(strengthValue), new Dexterity(dexteretyValue), new Constitution(constitutionValue), new Intelligence(intelligenceValue));
         hardarmor = new HardArmor();
+        necklace = new Necklace();
+        stick = new Stick();
+        mock = new EquipableMock();
     }
 
     @Test
@@ -53,9 +62,63 @@ class CharacterTest {
     }
 
     @Test
-    void equipItem_youCanEquip() {
+    void character_equipItem_youCanEquip() {
         character.equipItem(hardarmor);
-       assertFalse(character.getEquipables().isEmpty());
+        assertFalse(character.getEquipables().isEmpty());
+    }
+
+    @Test
+    void character_equipItem_youCantEquip() {
+        boolean equals = false;
+        Object equipable = new Object();
+
+        character.equipItem(hardarmor);
+        character.equipItem(necklace);
+        character.equipItem(stick);
+        character.equipItem(stick);
+
+        for (IEquipable object : character.getEquipables()) {
+            if (equipable.equals(object))
+                equals = true;
+            equipable = object;
+        }
+        assertFalse(equals);
+    }
+    @Test
+    void character_unequipItem_youCanunEquip() {
+       boolean unequiped = true;
+       int contador1 = 0;
+       int contador2 = 0;
+
+        character.equipItem(hardarmor);
+        character.equipItem(necklace);
+        character.equipItem(stick);
+        for (IEquipable object : character.getEquipables()){
+            contador1++;
+        }
+        character.unequipItem(stick);
+        for (IEquipable object : character.getEquipables()){
+            contador2++;
+        }
+        for (IEquipable object : character.getEquipables()){
+            if(object.equals(stick))
+                unequiped = false;
+        }
+assertEquals(contador1,contador2);
+
+    }
+
+    @Test
+    void character_calculateEquipmentModifier() {
+        double beforeEquip = character.power() + mock.modifier(character.getStrength())*2;
+        character.equipItem(mock);
+        double afterEquip = character.power();
+        assertEquals(beforeEquip, afterEquip);
+    }
+
+    @Test
+    void character_picItem_YouCanPick(){
+
     }
 
     @Test
