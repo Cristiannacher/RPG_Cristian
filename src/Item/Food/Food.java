@@ -1,10 +1,10 @@
 package Item.Food;
 
 import Character.Character;
-import Item.IChargeable;
+import Item.IPicable;
 import Item.IConsumable;
 
-public abstract class Food implements IConsumable, IChargeable {
+public abstract class Food implements IConsumable, IPicable {
     protected double power;
     protected int weight;
 

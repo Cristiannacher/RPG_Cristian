@@ -3,11 +3,10 @@ package Character;
 import Character.Job.Job;
 import Character.Race.Race;
 import Character.Stat.*;
-import Item.IChargeable;
+import Item.IPicable;
 import Item.IConsumable;
-import Item.IPortable;
+import Item.IEquipable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +20,9 @@ public class Character implements IDamageable {
     private Stat constitution;
     private Stat intelligence;
     private double damageTaken;
-    private List<IPortable> portableList = new ArrayList<>();
-    private List<IChargeable> chargeables = new ArrayList<>();
-    private int strong;
+    private List<IEquipable> equipables = new ArrayList<>();
+    private List<IPicable> picables = new ArrayList<>();
+    private double strong;
 
 
     public Character(String name, Race race, Job job, Strength strength, Dexterity dexterity, Constitution constitution, Intelligence intelligence) {
@@ -36,8 +35,8 @@ public class Character implements IDamageable {
         this.intelligence = intelligence;
     }
 
-    public List<IPortable> getPortableList() {
-        return portableList;
+    public List<IEquipable> getEquipables() {
+        return equipables;
     }
 
     public String getName() {
@@ -57,35 +56,58 @@ public class Character implements IDamageable {
     }
 
     public double velocity() {
-        return (dexterity.getValue() + race.modifier(dexterity) + job.modifier(dexterity)) * 2;
+        return calculateAttributeValue(dexterity) * 2;
     }
 
     public double power() {
-        return (strength.getValue() + race.modifier(strength) + job.modifier(strength)) * 2;
+        return calculateAttributeValue(strength) * 2;
     }
 
     public double magic() {
-        return (intelligence.getValue() + race.modifier(intelligence) + job.modifier(intelligence)) * 2;
+        return calculateAttributeValue(intelligence) * 2;
     }
 
-    public void chargeItem(IChargeable chargeable){
+    private double calculateAttributeValue(Stat stat) {
+        return stat.getValue() + race.modifier(stat) + job.modifier(stat) + calculateEquipmentModifier(stat);
+    }
+
+    private double calculateEquipmentModifier(Stat stat) {
+        double modifier = 0;
+        for (IEquipable equip : equipables)
+            modifier += equip.modifier(stat);
+
+        return modifier;
+    }
+
+    public void picItem(IPicable picable) {
         int accomulatedWeight = 0;
-        strong = (strength.getValue() * constitution.getValue());
-        if(!chargeables.isEmpty()){
-            for(IChargeable object:chargeables){
+        strong = power();
+        if (!picables.isEmpty()) {
+            for (IPicable object : picables) {
                 accomulatedWeight += object.getWeight();
             }
-            if((accomulatedWeight + chargeable.getWeight()) <= strong){
-                chargeables.add(chargeable);
+            if ((accomulatedWeight + picable.getWeight()) <= strong) {
+                picables.add(picable);
             } else System.out.println("You don't have enough strength");
         } else {
-            if(chargeable.getWeight()<=strong)
-                chargeables.add(chargeable);
+            if (picable.getWeight() <= strong)
+                picables.add(picable);
         }
     }
 
-    public void carryItem(IPortable portable) {
-        portable.carry(this);
+    public void equipItem(IEquipable equipado) {
+//        if (!equipables.isEmpty()) {
+        for (IEquipable equipable : equipables) {
+            if (equipable.equals(equipado)) {
+                System.out.println("You already have an " + equipado);
+                break;
+            } else {
+                equipables.add(equipado);
+            }
+        }
+//        }else {
+//            equipables.add(equipado);
+//        }
     }
 
     public void increaseConstitution(int value) {
@@ -104,20 +126,23 @@ public class Character implements IDamageable {
         this.intelligence.increase(value);
     }
 
-    public void addPortable(IPortable portable) {
-        portableList.add(portable);
+    public void addPortable(IEquipable portable) {
+        equipables.add(portable);
     }
 
     public int getConstitutionValue() {
         return constitution.getValue();
     }
-    public int getDexterityValue(){
+
+    public int getDexterityValue() {
         return dexterity.getValue();
     }
-    public int getIntelligenceValue(){
+
+    public int getIntelligenceValue() {
         return intelligence.getValue();
     }
-    public int getStrengthValue(){
+
+    public int getStrengthValue() {
         return strength.getValue();
     }
 
@@ -134,7 +159,7 @@ public class Character implements IDamageable {
 
     @Override
     public double maxHealth() {
-        return (constitution.getValue() + race.modifier(constitution) + job.modifier(constitution)) * 25;
+        return calculateAttributeValue(constitution) * 25;
     }
 
     @Override

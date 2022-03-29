@@ -1,10 +1,10 @@
 package Item.Potion;
 
-import Item.IChargeable;
+import Item.IPicable;
 import Item.IConsumable;
 import Character.Character;
 
-public abstract class Potion implements IConsumable, IChargeable {
+public abstract class Potion implements IConsumable, IPicable {
     protected int power;
     protected int weight;
 

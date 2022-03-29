@@ -1,6 +1,6 @@
 package Item;
 
-public interface IChargeable {
+public interface IPicable {
 
     int getWeight();
 
