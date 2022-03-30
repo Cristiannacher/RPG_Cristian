@@ -39,6 +39,10 @@ public class Character implements IDamageable {
         return equipables;
     }
 
+    public List<IPicable> getPicables() {
+        return picables;
+    }
+
     public String getName() {
         return name;
     }
@@ -94,16 +98,15 @@ public class Character implements IDamageable {
                 picables.add(picable);
         }
     }
-    public void unpicIitem(IPicable picable){
-        boolean unpicket = false;
-        for(IPicable object: picables){
-            if(picable.equals(object)) {
+
+    public void unpicIitem(IPicable picable) {
+        for (IPicable object : picables) {
+            if (picable.equals(object)) {
                 picables.remove(picable);
-                unpicket = true;
+                break;
             }
         }
-        if(unpicket)
-            System.out.println("The item isent in your inventory");
+
     }
 
     public void equipItem(IEquipable equiped) {
@@ -117,11 +120,12 @@ public class Character implements IDamageable {
     }
 
     // no funcione me cagon deu
-    public void unequipItem(IEquipable equiped){
-        for(IEquipable object: equipables){
-            if(equiped.equals(object))
+    public void unequipItem(IEquipable equiped) {
+        for (IEquipable object : equipables) {
+            if (equiped.equals(object)) {
                 equipables.remove(equiped);
-            break;
+                break;
+            }
         }
     }
 

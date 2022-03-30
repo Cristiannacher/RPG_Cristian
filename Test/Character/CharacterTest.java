@@ -9,6 +9,7 @@ import Item.Armor.Armor;
 import Item.Armor.HardArmor;
 import Item.EquipableMock;
 import Item.IEquipable;
+import Item.IPicable;
 import Item.Jewels.Jewels;
 import Item.Jewels.Necklace;
 import Item.Weapon.Stick;
@@ -84,41 +85,71 @@ class CharacterTest {
         }
         assertFalse(equals);
     }
+
     @Test
     void character_unequipItem_youCanunEquip() {
-       boolean unequiped = true;
-       int contador1 = 0;
-       int contador2 = 0;
+        boolean unequiped = true;
 
         character.equipItem(hardarmor);
         character.equipItem(necklace);
         character.equipItem(stick);
-        for (IEquipable object : character.getEquipables()){
-            contador1++;
-        }
+
         character.unequipItem(stick);
-        for (IEquipable object : character.getEquipables()){
-            contador2++;
-        }
-        for (IEquipable object : character.getEquipables()){
-            if(object.equals(stick))
+
+        for (IEquipable object : character.getEquipables()) {
+            if (object.equals(stick))
                 unequiped = false;
         }
-assertEquals(contador1,contador2);
-
+        assertTrue(unequiped);
     }
 
     @Test
     void character_calculateEquipmentModifier() {
-        double beforeEquip = character.power() + mock.modifier(character.getStrength())*2;
+        double beforeEquip = character.power() + mock.modifier(character.getStrength()) * 2;
         character.equipItem(mock);
         double afterEquip = character.power();
         assertEquals(beforeEquip, afterEquip);
     }
-
     @Test
     void character_picItem_YouCanPick(){
+        character.picItem(stick);
+        assertFalse(character.getPicables().isEmpty());
+    }
 
+    //el metodo se basa en intentar poner mas cosas de las que se pueden
+    //entonces si el metodo funciona bien al hacer las suma del peso de las cosas picadas
+    // no sera superior a la fuerza
+    @Test
+    void character_picItem_YouCanTPic() {
+        double strong = character.power();
+        double itemsPicketsWeight = 0;
+        character.picItem(hardarmor);
+        character.picItem(necklace);
+        character.picItem(stick);
+        character.picItem(stick);
+        character.picItem(hardarmor);
+        character.picItem(necklace);
+        character.picItem(stick);
+        character.picItem(stick);
+        character.picItem(hardarmor);
+        character.picItem(necklace);
+        for(IPicable picable: character.getPicables()){
+            itemsPicketsWeight += picable.getWeight();
+        }
+        assertTrue((itemsPicketsWeight<=strong));
+    }
+    @Test
+    void character_unpicIem_YouCanUnpic(){
+        boolean equals = false;
+        character.picItem(hardarmor);
+        character.picItem(necklace);
+        character.picItem(stick);
+        character.unpicIitem(stick);
+        for(IPicable picable: character.getPicables()){
+            if(picable.equals(stick))
+                equals = true;
+        }
+        assertFalse(equals);
     }
 
     @Test
@@ -145,7 +176,6 @@ assertEquals(contador1,contador2);
         assertEquals(maxhealth, character.maxHealth());
     }
 
-    //arreglar
     @Test
     void character_health_haveCharacterHealth() {
         int damage = 5;
