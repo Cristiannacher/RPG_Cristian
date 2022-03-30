@@ -116,6 +116,7 @@ class CharacterTest {
         assertFalse(character.getPicables().isEmpty());
     }
 
+
     //el metodo se basa en intentar poner mas cosas de las que se pueden
     //entonces si el metodo funciona bien al hacer las suma del peso de las cosas picadas
     // no sera superior a la fuerza
